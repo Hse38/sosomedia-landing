@@ -117,17 +117,54 @@ header {
   contain-intrinsic-size: auto 100vh;
 }
 
+/* PERF: only transform/opacity to avoid layout thrashing; no will-change to reduce memory */
 .fade-up {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(28px) translateZ(0);
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 .fade-up.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) translateZ(0);
 }
 
 @keyframes float {
   0%, 100% { transform: translate3d(0,0,0) scale(1); }
   50% { transform: translate3d(40px,-40px,0) scale(1.15); }
+}
+
+/* ========== SERVICES HORIZONTAL SCROLL: modern scrollbar + perf ========== */
+/* PERF: contain layout so horizontal scroll doesn't trigger full-page reflow */
+.services-scroll {
+  contain: layout style paint;
+  -webkit-overflow-scrolling: touch;
+}
+/* PERF: isolate each card so repaint doesn't spread */
+.services-scroll > div {
+  contain: layout paint;
+}
+/* Modern scrollbar: thin, rounded, theme colors; hidden until hover on desktop */
+.services-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 191, 109, 0.5) transparent;
+}
+.services-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.services-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+.services-scroll::-webkit-scrollbar-thumb {
+  background: rgba(156, 191, 109, 0.4);
+  border-radius: 3px;
+}
+.services-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 191, 109, 0.7);
+}
+/* PERF: cards inside horizontal scroll use solid bg instead of backdrop-filter to avoid GPU overload and kasma */
+.services-scroll .glass {
+  backdrop-filter: none;
+  background: radial-gradient(circle at top left, rgba(156,191,109,0.06), transparent 55%),
+              rgba(15,23,42,0.92);
 }

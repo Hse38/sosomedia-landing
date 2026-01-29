@@ -68,11 +68,11 @@ const revealObserver = new IntersectionObserver((entries) => {
   requestAnimationFrame(() => {
     toShow.forEach(el => {
       el.classList.add('show');
-      const onDone = () => {
+      /* PERF: clear willChange after transition to free GPU memory */
+      el.addEventListener('transitionend', function onDone() {
         el.style.willChange = 'auto';
         el.removeEventListener('transitionend', onDone);
-      };
-      el.addEventListener('transitionend', onDone);
+      }, { once: true });
     });
   });
 }, { threshold: 0.2 });
