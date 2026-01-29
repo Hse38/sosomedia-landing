@@ -10,11 +10,11 @@
 <body class="overflow-x-hidden">
 
   <!-- Glow orbs -->
-  <div class="orb orb-green w-[420px] h-[420px] -top-32 -left-24"></div>
-  <div class="orb orb-purple w-[380px] h-[380px] top-40 -right-24"></div>
+  <div class="orb orb-green w-[280px] h-[280px] -top-32 -left-24" aria-hidden></div>
+  <div class="orb orb-purple w-[240px] h-[240px] top-40 -right-24" aria-hidden></div>
 
   <!-- NAVBAR -->
-  <header class="fixed top-0 left-0 w-full z-30 border-b border-slate-800/70 bg-black/40 backdrop-blur-xl">
+  <header class="fixed top-0 left-0 w-full z-30 border-b border-slate-800/70 bg-black/70">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
       <a href="#top" class="flex items-center gap-3 group">
         <div class="w-9 h-9 rounded-2xl flex items-center justify-center
@@ -207,69 +207,86 @@
     </main>
   <!-- DEFERRED: section templates — injected when placeholder approaches viewport (IntersectionObserver) -->
   <template id="tpl-services"><section id="services" class="section bg-black/30 border-y border-slate-800/70">
-      <div class="max-w-6xl mx-auto space-y-10 fade-up">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.2em] text-[var(--soso-green)] mb-2">
-              Hizmetler
-            </p>
-            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">
-              Ajansınız için tasarlanmış tek panel.
-            </h2>
-          </div>
-          <p class="text-slate-400 text-sm max-w-md">
-            SOSO MEDIA CO; içerik üretimi, reklam yönetimi, raporlama ve onay süreçlerini
-            tek bir ekranda toplar. Hem ekibiniz hem müşterileriniz için net ve anlaşılır bir deneyim sunar.
-          </p>
+      <div class="max-w-6xl mx-auto space-y-8 fade-up">
+        <div class="text-center">
+          <p class="text-xs uppercase tracking-[0.2em] text-[var(--soso-green)] mb-2">Hizmetlerimiz</p>
+          <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-2">Geniş hizmet yelpazesi.</h2>
+          <p class="text-slate-400 text-sm max-w-xl mx-auto">Kurumsal marka danışmanlığından dijital reklam yönetimine, prodüksiyondan ölçümlemeye kadar.</p>
         </div>
-
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="glass rounded-3xl p-6 card-hover">
-            <div class="w-10 h-10 rounded-2xl bg-[var(--soso-green)]/20 border border-[var(--soso-green)]/50 flex items-center justify-center mb-4">
-              <span class="text-xl text-[var(--soso-green)]">📊</span>
+        <div class="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scroll-smooth" style="scrollbar-width:thin;">
+          <div class="flex-shrink-0 w-[min(320px,88vw)] snap-center">
+            <div class="glass rounded-3xl p-6 card-hover h-full">
+              <div class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center mb-4 text-amber-400">◆</div>
+              <h3 class="font-semibold mb-2 text-sm">Kurumsal Marka Danışmanlığı ve Strateji Geliştirme</h3>
+              <p class="text-xs text-slate-400 mb-3">Marka konumlandırma, kimlik çalışmaları ve pazar hedeflerine uygun iletişim stratejileri.</p>
+              <ul class="text-xs text-slate-400 space-y-1">
+                <li>• Marka Denetimi ve Rekabet Analizi</li>
+                <li>• Hedef Kitle ve Değer Önerisi (Value Proposition)</li>
+                <li>• İletişim ve kampanya stratejileri</li>
+                <li>• Kriz İletişimi Planlaması ve Yönetimi</li>
+              </ul>
             </div>
-            <h3 class="font-semibold mb-2">Performans Analizi</h3>
-            <p class="text-sm text-slate-400 mb-3">
-              Meta API ile gelen tüm veriler tek panelde.
-              Erişim, etkileşim, dönüşüm ve CPM gibi metrikleri canlı takip edin.
-            </p>
-            <ul class="text-xs text-slate-400 space-y-1">
-              <li>• Gerçek zamanlı dashboard</li>
-              <li>• Kampanya bazlı filtreleme</li>
-              <li>• Otomatik PDF raporlar</li>
-            </ul>
           </div>
-
-          <div class="glass rounded-3xl p-6 card-hover">
-            <div class="w-10 h-10 rounded-2xl bg-[var(--soso-purple)]/25 border border-[var(--soso-purple)]/60 flex items-center justify-center mb-4">
-              <span class="text-xl text-[var(--soso-purple)]">🧠</span>
+          <div class="flex-shrink-0 w-[min(320px,88vw)] snap-center">
+            <div class="glass rounded-3xl p-6 card-hover h-full">
+              <div class="w-10 h-10 rounded-2xl bg-violet-500/25 border border-violet-400/50 flex items-center justify-center mb-4 text-violet-400">◇</div>
+              <h3 class="font-semibold mb-2 text-sm">Kurumsal ve Dijital Kimlik Tasarımı</h3>
+              <p class="text-xs text-slate-400 mb-3">Logodan kartvizite, web arayüzünden e-posta şablonlarına kadar görsel kimlik.</p>
+              <ul class="text-xs text-slate-400 space-y-1">
+                <li>• Logo Tasarımı ve Uygulamaları</li>
+                <li>• Kartvizit, Antetli Kağıt, Kurumsal Döküman Şablonları</li>
+                <li>• Kurumsal Kıyafet ve Materyal (Ajanda, Kalem vb.)</li>
+                <li>• Web sitesi UI/UX ve E-posta Pazarlama Şablonları</li>
+              </ul>
             </div>
-            <h3 class="font-semibold mb-2">AI Destekli İçerik</h3>
-            <p class="text-sm text-slate-400 mb-3">
-              Yapay zeka, markanızın tonuna ve hedef kitlenize uygun
-              post, başlık ve açıklama önerileri üretir.
-            </p>
-            <ul class="text-xs text-slate-400 space-y-1">
-              <li>• Brief’ten otomatik içerik taslağı</li>
-              <li>• Farklı platformlara göre metin varyasyonları</li>
-              <li>• En iyi performanslı içerik tiplerini önerme</li>
-            </ul>
           </div>
-
-          <div class="glass rounded-3xl p-6 card-hover">
-            <div class="w-10 h-10 rounded-2xl bg-[var(--soso-sand)]/30 border border-[var(--soso-sand)]/70 flex items-center justify-center mb-4">
-              <span class="text-xl text-[var(--soso-sand)]">📅</span>
+          <div class="flex-shrink-0 w-[min(320px,88vw)] snap-center">
+            <div class="glass rounded-3xl p-6 card-hover h-full">
+              <div class="w-10 h-10 rounded-2xl bg-pink-500/25 border border-pink-400/50 flex items-center justify-center mb-4 text-pink-400">◉</div>
+              <h3 class="font-semibold mb-2 text-sm">Prodüksiyon ve Görsel İçerik Üretimi</h3>
+              <p class="text-xs text-slate-400 mb-3">Fotoğraf, drone çekimi ve kurumsal tanıtım filmi ile görsel içerik prodüksiyonu.</p>
+              <ul class="text-xs text-slate-400 space-y-1">
+                <li>• Yönetici Portreleri, Ekip, Ofis/Tesis/Ürün Fotoğrafçılığı</li>
+                <li>• Drone çekimi, hava fotoğrafçılığı</li>
+                <li>• Kurumsal Tanıtım Filmi ve Video Prodüksiyonu</li>
+              </ul>
             </div>
-            <h3 class="font-semibold mb-2">İçerik Takvimi & Onay</h3>
-            <p class="text-sm text-slate-400 mb-3">
-              Ajans ve müşteri aynı takvim üzerinden çalışır; içerikler yorumlanır,
-              düzenlenir ve tek tıkla onaylanır.
-            </p>
-            <ul class="text-xs text-slate-400 space-y-1">
-              <li>• Sürükle-bırak içerik planlama</li>
-              <li>• Onay bekleyen gönderi listesi</li>
-              <li>• Otomatik hatırlatıcı bildirimler</li>
-            </ul>
+          </div>
+          <div class="flex-shrink-0 w-[min(320px,88vw)] snap-center">
+            <div class="glass rounded-3xl p-6 card-hover h-full">
+              <div class="w-10 h-10 rounded-2xl bg-[var(--soso-green)]/20 border border-[var(--soso-green)]/50 flex items-center justify-center mb-4 text-[var(--soso-green)]">▣</div>
+              <h3 class="font-semibold mb-2 text-sm">Sosyal Medya Yönetimi ve İçerik Üretimi</h3>
+              <p class="text-xs text-slate-400 mb-3">Strateji, içerik takvimi ve platformlara özel içerik üretimi ile topluluk yönetimi.</p>
+              <ul class="text-xs text-slate-400 space-y-1">
+                <li>• Sosyal Medya Stratejisi ve İçerik Takvimi</li>
+                <li>• Görsel, video (Reels/Hikayeler) ve metin içerikleri</li>
+                <li>• Grafik Tasarım, Topluluk Yönetimi</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex-shrink-0 w-[min(320px,88vw)] snap-center">
+            <div class="glass rounded-3xl p-6 card-hover h-full">
+              <div class="w-10 h-10 rounded-2xl bg-cyan-500/25 border border-cyan-400/50 flex items-center justify-center mb-4 text-cyan-400">▲</div>
+              <h3 class="font-semibold mb-2 text-sm">Dijital Reklam Yönetimi (Performans Pazarlaması)</h3>
+              <p class="text-xs text-slate-400 mb-3">Meta ve LinkedIn reklamları ile hedef belirleme, kampanya kurulumu ve bütçe optimizasyonu.</p>
+              <ul class="text-xs text-slate-400 space-y-1">
+                <li>• Meta Reklam (Facebook &amp; Instagram), A/B testleri</li>
+                <li>• LinkedIn Reklam, B2B hedefleme</li>
+                <li>• Reklam Bütçesi Optimizasyonu ve Raporlama</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex-shrink-0 w-[min(320px,88vw)] snap-center">
+            <div class="glass rounded-3xl p-6 card-hover h-full">
+              <div class="w-10 h-10 rounded-2xl bg-teal-500/25 border border-teal-400/50 flex items-center justify-center mb-4 text-teal-400">▤</div>
+              <h3 class="font-semibold mb-2 text-sm">Ölçümleme ve Analiz</h3>
+              <p class="text-xs text-slate-400 mb-3">KPI takibi, performans raporları ve dijital varlıkların dönüşüm optimizasyonu.</p>
+              <ul class="text-xs text-slate-400 space-y-1">
+                <li>• Aylık/Dönemsel Performans Raporları</li>
+                <li>• KPI Belirleme ve İzleme</li>
+                <li>• Dönüşüm Optimizasyonu (CRO)</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

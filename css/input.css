@@ -28,30 +28,27 @@ header {
   transform: translateZ(0);
 }
 
-/* PERF: will-change promotes orbs to GPU layer */
+/* PERF: smaller blur + no will-change = less GPU load, less jank */
 .orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(60px);
-  opacity: 0.55;
+  filter: blur(32px);
+  opacity: 0.5;
   pointer-events: none;
   mix-blend-mode: screen;
-  animation: float 16s ease-in-out infinite;
-  will-change: transform;
+  animation: float 20s ease-in-out infinite;
 }
 
-/* PERF: tab hidden = pause orb animation to save CPU (JS adds .orb-paused to body) */
 .orb-paused .orb {
   animation-play-state: paused;
 }
 
-/* PERF: mobile GPUs struggle with 60px blur — 45px still looks glow, less jank */
 @media (max-width: 768px) {
-  .orb { filter: blur(45px); }
+  .orb { filter: blur(24px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb { filter: blur(40px); animation-duration: 24s; }
+  .orb { filter: blur(20px); animation-duration: 0.01ms; animation-iteration-count: 1; }
 }
 
 .orb-green {
@@ -63,15 +60,15 @@ header {
   animation-delay: -6s;
 }
 
-/* PERF: translateZ(0) + contain:paint isolate backdrop-filter repaints */
+/* PERF: lighter blur = less jank on scroll */
 .glass {
   background: radial-gradient(circle at top left, rgba(156,191,109,0.10), transparent 55%),
-              rgba(15,23,42,0.85);
+              rgba(15,23,42,0.9);
   border: 1px solid rgba(148,163,184,0.35);
   box-shadow:
     0 18px 45px rgba(0,0,0,0.65),
     0 0 0 1px rgba(15,23,42,0.8);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(8px);
   transform: translateZ(0);
   contain: paint;
 }
@@ -122,9 +119,8 @@ header {
 
 .fade-up {
   opacity: 0;
-  transform: translateY(45px);
-  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-  will-change: transform, opacity;
+  transform: translateY(28px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 .fade-up.show {
   opacity: 1;
