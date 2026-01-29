@@ -3,6 +3,18 @@
  * Services, Features, AI, Contact, Footer injected when placeholder nears viewport.
  */
 
+// PERF: pause orb animation when tab hidden — saves CPU, no visual change when visible
+function initOrbPause() {
+  function update() {
+    document.body.classList.toggle('orb-paused', document.hidden);
+  }
+  if (typeof document.hidden !== 'undefined') {
+    document.addEventListener('visibilitychange', update);
+    update();
+  }
+}
+initOrbPause();
+
 function setYear() {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -43,12 +55,18 @@ const injectObserver = new IntersectionObserver((entries) => {
   });
 }, { rootMargin: '200px 0px', threshold: 0 });
 
+// PERF: batch all .show + listeners in one rAF so multiple fade-ups don't cause multiple frames
 const revealObserver = new IntersectionObserver((entries) => {
+  const toShow = [];
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
     const el = entry.target;
     revealObserver.unobserve(el);
-    requestAnimationFrame(() => {
+    toShow.push(el);
+  });
+  if (toShow.length === 0) return;
+  requestAnimationFrame(() => {
+    toShow.forEach(el => {
       el.classList.add('show');
       const onDone = () => {
         el.style.willChange = 'auto';

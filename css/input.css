@@ -18,6 +18,11 @@ body {
   scroll-behavior: smooth;
 }
 
+/* PERF: main on own layer so scroll repaints don't affect fixed header/orbs */
+main {
+  transform: translateZ(0);
+}
+
 /* PERF: fixed header has backdrop-blur — promote to own layer */
 header {
   transform: translateZ(0);
@@ -35,6 +40,16 @@ header {
   will-change: transform;
 }
 
+/* PERF: tab hidden = pause orb animation to save CPU (JS adds .orb-paused to body) */
+.orb-paused .orb {
+  animation-play-state: paused;
+}
+
+/* PERF: mobile GPUs struggle with 60px blur — 45px still looks glow, less jank */
+@media (max-width: 768px) {
+  .orb { filter: blur(45px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .orb { filter: blur(40px); animation-duration: 24s; }
 }
@@ -48,7 +63,7 @@ header {
   animation-delay: -6s;
 }
 
-/* PERF: translateZ(0) isolates backdrop-filter repaints */
+/* PERF: translateZ(0) + contain:paint isolate backdrop-filter repaints */
 .glass {
   background: radial-gradient(circle at top left, rgba(156,191,109,0.10), transparent 55%),
               rgba(15,23,42,0.85);
@@ -58,6 +73,7 @@ header {
     0 0 0 1px rgba(15,23,42,0.8);
   backdrop-filter: blur(20px);
   transform: translateZ(0);
+  contain: paint;
 }
 
 .btn-primary {
@@ -90,9 +106,11 @@ header {
   border-color: rgba(156,191,109,0.8);
 }
 
+/* PERF: contain:paint limits repaint to section bounds during scroll */
 .section {
   min-height: 100vh;
   padding: 6rem 1.5rem;
+  contain: paint;
 }
 
 .section-placeholder {
