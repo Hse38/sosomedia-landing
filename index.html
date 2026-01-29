@@ -18,7 +18,13 @@
       background: radial-gradient(circle at top, #111827, #020617, #000000);
       color: var(--soso-ivory);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      /* scroll-behavior: smooth — left as-is; changing would alter scroll feel (forbidden) */
       scroll-behavior: smooth;
+    }
+
+    /* PERF: fixed header has backdrop-blur — promote to own layer to avoid repaint affecting scroll */
+    header {
+      transform: translateZ(0);
     }
 
     /* Glow orbs - PERF: will-change promotes to GPU layer, reduces main-thread animation cost */
@@ -590,26 +596,30 @@
   </main>
 
   <script>
-    // Yıl - single DOM write, no batching needed
-    document.getElementById("year").textContent = new Date().getFullYear();
+    // PERF: single read + single write — no layout thrashing; year is below fold so no FCP impact
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // PERF: Scroll reveal - IntersectionObserver is non-blocking; release will-change after
-    // transition to free GPU layer memory and avoid long-term compositor cost
+    // PERF: Scroll reveal — IntersectionObserver (no scroll listener = no passive needed).
+    // Unobserve after show to reduce callback work on future scrolls.
+    // rAF batches classList.add to next frame so we don't do DOM writes in same tick as observer callback (avoids layout thrashing).
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
-        el.classList.add('show');
-        // One-time: remove will-change after animation to release compositor layer
-        const onDone = () => {
-          el.style.willChange = 'auto';
-          el.removeEventListener('transitionend', onDone);
-        };
-        el.addEventListener('transitionend', onDone);
+        observer.unobserve(el);
+        requestAnimationFrame(() => {
+          el.classList.add('show');
+          const onDone = () => {
+            el.style.willChange = 'auto';
+            el.removeEventListener('transitionend', onDone);
+          };
+          el.addEventListener('transitionend', onDone);
+        });
       });
     }, { threshold: 0.2 });
 
-    // PERF: Defer observer setup to idle so initial paint isn't blocked
+    // PERF: Defer observer setup to idle so initial paint isn't blocked; cache query result (single DOM read)
     const fadeUps = document.querySelectorAll('.fade-up');
     if (typeof requestIdleCallback !== 'undefined') {
       requestIdleCallback(() => { fadeUps.forEach(el => observer.observe(el)); }, { timeout: 100 });
