@@ -1,0 +1,11 @@
+{
+  "name": "sosomedia-landing",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i css/input.css -o css/main.css --minify",
+    "build:dev": "tailwindcss -i css/input.css -o css/main.css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
