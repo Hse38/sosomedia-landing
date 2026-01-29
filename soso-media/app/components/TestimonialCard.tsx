@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
 import type { TestimonialItem } from '@/app/types';
@@ -42,9 +43,11 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <img
+<Image
           src={testimonial.image}
           alt={testimonial.name}
+          width={48}
+          height={48}
           className="w-12 h-12 rounded-full object-cover"
         />
         <div>

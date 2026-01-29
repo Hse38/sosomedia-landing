@@ -19,13 +19,25 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const form = e.currentTarget;
+    const website = (form.elements.namedItem('website') as HTMLInputElement)?.value;
+    const { submitDemoRequest } = await import('@/app/lib/demoRequest');
+    const result = await submitDemoRequest({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      agency: formData.agency.trim() || undefined,
+      message: formData.message.trim() || undefined,
+      website: website || undefined,
+    });
     setIsSubmitting(false);
-    setIsSubmitted(true);
+    if (result.ok) setIsSubmitted(true);
+    else setError(result.error ?? 'Bir hata oluştu.');
   };
 
   const handleChange = (
@@ -97,6 +109,15 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                   Bilgilerinizi bırakın, size ulaşalım.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {error && (
+                    <p className="text-sm text-red-400 bg-red-400/10 rounded-xl px-3 py-2">
+                      {error}
+                    </p>
+                  )}
+                  <div className="absolute -left-[9999px]" aria-hidden="true">
+                    <label htmlFor="website-modal">Web</label>
+                    <input type="text" id="website-modal" name="website" tabIndex={-1} autoComplete="off" />
+                  </div>
                   <div>
                     <label className="block text-xs text-gray-400 mb-1">
                       Ad Soyad

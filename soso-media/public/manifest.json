@@ -1,0 +1,10 @@
+{
+  "name": "SOSO MEDIA CO",
+  "short_name": "SOSO MEDIA",
+  "description": "AI destekli sosyal medya yönetim platformu. Meta API entegrasyonları ve yapay zeka destekli analizler.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#a3e635",
+  "lang": "tr"
+}

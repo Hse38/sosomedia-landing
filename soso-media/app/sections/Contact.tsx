@@ -14,13 +14,25 @@ export function Contact() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const form = e.currentTarget;
+    const website = (form.elements.namedItem('website') as HTMLInputElement)?.value;
+    const { submitDemoRequest } = await import('@/app/lib/demoRequest');
+    const result = await submitDemoRequest({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      agency: formData.agency.trim() || undefined,
+      message: formData.message.trim() || undefined,
+      website: website || undefined,
+    });
     setIsSubmitting(false);
-    setIsSubmitted(true);
+    if (result.ok) setIsSubmitted(true);
+    else setError(result.error ?? 'Bir hata oluştu.');
   };
 
   const handleChange = (
@@ -59,13 +71,15 @@ export function Contact() {
                     icon: MapPin,
                     text: 'Meta API ve AI entegrasyonu için teknik yol haritası',
                   },
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-lime-400/20 rounded-xl flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-lime-400" />
+                ].map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-lime-400/20 rounded-xl flex items-center justify-center">
+                        <Icon className="w-5 h-5 text-lime-400" />
+                      </div>
+                      <span className="text-gray-300">{item.text}</span>
                     </div>
-                    <span className="text-gray-300">{item.text}</span>
-                  </div>
                   );
                 })}
               </div>
@@ -118,6 +132,16 @@ export function Contact() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {error && (
+                    <p className="text-sm text-red-400 bg-red-400/10 rounded-xl px-4 py-3">
+                      {error}
+                    </p>
+                  )}
+                  {/* Honeypot: bot doldurursa API reddeder */}
+                  <div className="absolute -left-[9999px]" aria-hidden="true">
+                    <label htmlFor="website-contact">Web sitesi</label>
+                    <input type="text" id="website-contact" name="website" tabIndex={-1} autoComplete="off" />
+                  </div>
                   <div>
                     <label className="block text-sm text-gray-400 mb-2">
                       Ad Soyad

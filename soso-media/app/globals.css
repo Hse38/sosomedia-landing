@@ -72,12 +72,13 @@ html {
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* GPU-accelerated animations */
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-10px) translateZ(0);
   }
 }
 @keyframes pulse-glow {
@@ -90,8 +91,29 @@ html {
 }
 .animate-float {
   animation: float 3s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Reduced motion: accessibility & performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-float,
+  .animate-pulse-glow {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }
 
