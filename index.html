@@ -21,7 +21,7 @@
       scroll-behavior: smooth;
     }
 
-    /* Glow orbs */
+    /* Glow orbs - PERF: will-change promotes to GPU layer, reduces main-thread animation cost */
     .orb {
       position: absolute;
       border-radius: 9999px;
@@ -30,6 +30,7 @@
       pointer-events: none;
       mix-blend-mode: screen;
       animation: float 16s ease-in-out infinite;
+      will-change: transform;
     }
 
     .orb-green {
@@ -41,6 +42,7 @@
       animation-delay: -6s;
     }
 
+    /* PERF: translateZ(0) creates compositing layer, isolates backdrop-filter repaints */
     .glass {
       background: radial-gradient(circle at top left, rgba(156,191,109,0.10), transparent 55%),
                   rgba(15,23,42,0.85);
@@ -49,6 +51,7 @@
         0 18px 45px rgba(0,0,0,0.65),
         0 0 0 1px rgba(15,23,42,0.8);
       backdrop-filter: blur(20px);
+      transform: translateZ(0);
     }
 
     .btn-primary {
@@ -70,8 +73,9 @@
       border: 1px solid rgba(148,163,184,0.5);
     }
 
+    /* PERF: explicit properties avoid transitioning layout-triggering props, reduces reflow */
     .card-hover {
-      transition: all 0.25s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
     .card-hover:hover {
       transform: translateY(-4px) translateZ(0);
@@ -86,10 +90,12 @@
       padding: 6rem 1.5rem;
     }
 
+    /* PERF: opacity+transform only = compositor-only transition; will-change promotes to GPU */
     .fade-up {
       opacity: 0;
       transform: translateY(45px);
-      transition: all 0.7s ease-out;
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      will-change: transform, opacity;
     }
     .fade-up.show {
       opacity: 1;
@@ -584,17 +590,32 @@
   </main>
 
   <script>
-    // Yıl
+    // Yıl - single DOM write, no batching needed
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Scroll reveal
+    // PERF: Scroll reveal - IntersectionObserver is non-blocking; release will-change after
+    // transition to free GPU layer memory and avoid long-term compositor cost
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('show');
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.add('show');
+        // One-time: remove will-change after animation to release compositor layer
+        const onDone = () => {
+          el.style.willChange = 'auto';
+          el.removeEventListener('transitionend', onDone);
+        };
+        el.addEventListener('transitionend', onDone);
       });
     }, { threshold: 0.2 });
 
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    // PERF: Defer observer setup to idle so initial paint isn't blocked
+    const fadeUps = document.querySelectorAll('.fade-up');
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(() => { fadeUps.forEach(el => observer.observe(el)); }, { timeout: 100 });
+    } else {
+      fadeUps.forEach(el => observer.observe(el));
+    }
   </script>
 </body>
 </html>
