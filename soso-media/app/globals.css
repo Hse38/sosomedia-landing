@@ -44,7 +44,7 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-lime-400 to-lime-300;
   }
   .glass-card {
-    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-2xl;
+    @apply bg-white/[0.03] border border-white/[0.08] rounded-2xl;
   }
   .glow-lime {
     box-shadow: 0 0 30px rgba(163, 230, 53, 0.3);
@@ -94,3 +94,4 @@ html {
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
+

@@ -12,7 +12,7 @@ export function DashboardMockup() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="relative bg-[#12121a]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl"
+        className="relative bg-[#12121a] border border-white/10 rounded-3xl p-6 shadow-2xl"
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">

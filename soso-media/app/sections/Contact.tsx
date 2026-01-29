@@ -84,7 +84,7 @@ export function Contact() {
           </ScrollReveal>
 
           <ScrollReveal direction="right">
-            <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-8">
+            <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8">
               {isSubmitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}

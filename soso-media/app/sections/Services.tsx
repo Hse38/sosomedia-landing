@@ -1,10 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { BarChart3, Brain, Calendar, ArrowRight } from 'lucide-react';
+import { BarChart3, Brain, Calendar } from 'lucide-react';
 import { ScrollReveal } from '@/app/components/ScrollReveal';
+import { ServiceCard } from '@/app/components/ServiceCard';
+import type { ServiceItem } from '@/app/types';
 
-const services = [
+const services: ServiceItem[] = [
   {
     icon: BarChart3,
     title: 'Performans Analizi',
@@ -61,51 +62,11 @@ export function Services() {
         </ScrollReveal>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
+          {services.map((service, index) => (
             <ScrollReveal key={service.title} delay={index * 0.1}>
-              <motion.div
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className="group relative bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-8 hover:border-white/[0.15] transition-all duration-300 h-full"
-              >
-                <div
-                  className={`w-14 h-14 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
-                >
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-4">
-                  {service.title}
-                </h3>
-                <p className="text-gray-400 mb-6 leading-relaxed">
-                  {service.description}
-                </p>
-                <ul className="space-y-3 mb-6">
-                  {service.features.map((feature, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center gap-2 text-sm text-gray-300"
-                    >
-                      <span className="w-1.5 h-1.5 bg-lime-400 rounded-full" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 text-lime-400 text-sm font-medium group-hover:gap-3 transition-all"
-                >
-                  Detayları Gör
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity`}
-                />
-              </motion.div>
+              <ServiceCard service={service} />
             </ScrollReveal>
-            );
-          })}
+          ))}
         </div>
       </div>
     </section>

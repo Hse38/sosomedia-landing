@@ -5,16 +5,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { NAV_LINKS } from '@/app/lib/constants';
+import { DemoModal } from '@/app/components/DemoModal';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 50);
+        ticking = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -25,7 +34,7 @@ export function Navbar() {
       transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5'
+          ? 'bg-[#0a0a0f]/90 border-b border-white/5'
           : 'bg-transparent'
       }`}
     >
@@ -86,7 +95,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#0a0a0f]/95 backdrop-blur-xl border-t border-white/5"
+            className="md:hidden bg-[#0a0a0f] border-t border-white/5"
           >
             <nav className="flex flex-col p-4 gap-4">
               {NAV_LINKS.map((link) => (
@@ -107,18 +116,24 @@ export function Navbar() {
                 >
                   Panel Girişi
                 </Link>
-                <Link
-                  href="#contact"
-                  className="px-5 py-3 text-center bg-lime-400 text-black font-semibold rounded-full"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsDemoModalOpen(true);
+                  }}
+                  className="px-5 py-3 text-center bg-lime-400 text-black font-semibold rounded-full w-full"
                 >
                   Demo Talep Et
-                </Link>
+                </button>
               </div>
             </nav>
           </motion.div>
         )}
       </AnimatePresence>
+      <DemoModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+      />
     </motion.header>
   );
 }

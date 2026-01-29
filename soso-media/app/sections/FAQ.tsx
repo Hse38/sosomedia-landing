@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { ScrollReveal } from '@/app/components/ScrollReveal';
+import { FAQItem } from '@/app/components/FAQItem';
+import type { FAQCategory } from '@/app/types';
 
-const faqs = [
+const faqs: FAQCategory[] = [
   {
     category: 'Genel',
     questions: [
@@ -60,14 +60,6 @@ const faqs = [
 ];
 
 export function FAQ() {
-  const [openItems, setOpenItems] = useState<string[]>([]);
-
-  const toggleItem = (id: string) => {
-    setOpenItems((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
   return (
     <section className="py-24 relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,47 +84,13 @@ export function FAQ() {
                   {category.category}
                 </h3>
                 <div className="space-y-4">
-                  {category.questions.map((item, itemIndex) => {
-                    const id = `${category.category}-${itemIndex}`;
-                    const isOpen = openItems.includes(id);
-                    return (
-                      <div
-                        key={id}
-                        className="bg-white/[0.03] border border-white/[0.08] rounded-xl overflow-hidden hover:border-white/[0.15] transition-colors"
-                      >
-                        <button
-                          onClick={() => toggleItem(id)}
-                          className="w-full flex items-center justify-between p-6 text-left"
-                        >
-                          <span className="text-white font-medium pr-4">
-                            {item.q}
-                          </span>
-                          <motion.div
-                            animate={{ rotate: isOpen ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                          </motion.div>
-                        </button>
-                        <AnimatePresence>
-                          {isOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <div className="px-6 pb-6">
-                                <p className="text-gray-400 leading-relaxed">
-                                  {item.a}
-                                </p>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })}
+                  {category.questions.map((item, itemIndex) => (
+                    <FAQItem
+                      key={`${category.category}-${itemIndex}`}
+                      item={item}
+                      id={`${category.category}-${itemIndex}`}
+                    />
+                  ))}
                 </div>
               </div>
             </ScrollReveal>

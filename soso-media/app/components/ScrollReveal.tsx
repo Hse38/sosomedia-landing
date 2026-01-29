@@ -21,7 +21,8 @@ export function ScrollReveal({
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {
     once: true,
-    margin: '-100px',
+    amount: 0.15,
+    margin: '0px 0px -80px 0px',
   });
 
   const directions = {
@@ -52,6 +53,7 @@ export function ScrollReveal({
         delay,
         ease: [0.22, 1, 0.36, 1],
       }}
+      style={{ willChange: isInView ? 'auto' : 'transform, opacity' }}
       className={className}
     >
       {children}
