@@ -96,6 +96,12 @@
       padding: 6rem 1.5rem;
     }
 
+    /* DEFERRED: placeholder reserves space (same .section min-height) to prevent CLS when content is injected */
+    .section-placeholder {
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
     /* PERF: opacity+transform only = compositor-only transition; will-change promotes to GPU */
     .fade-up {
       opacity: 0;
@@ -300,8 +306,20 @@
       </div>
     </section>
 
-    <!-- SERVICES -->
-    <section id="services" class="section bg-black/30 border-y border-slate-800/70">
+    <!-- DEFERRED: Sections not visible on initial load; placeholders reserve space to avoid CLS -->
+    <div id="services" class="section bg-black/30 border-y border-slate-800/70 section-placeholder" data-inject="services" aria-hidden="true"></div>
+    <!-- DEFERRED: Platform Features -->
+    <div id="features" class="section section-placeholder" data-inject="features" aria-hidden="true"></div>
+    <!-- DEFERRED: AI Section -->
+    <div id="ai" class="section bg-black/40 border-y border-slate-800/70 section-placeholder" data-inject="ai" aria-hidden="true"></div>
+    <!-- DEFERRED: Contact -->
+    <div id="contact" class="section section-placeholder" data-inject="contact" aria-hidden="true"></div>
+    <!-- DEFERRED: Footer -->
+    <footer class="border-t border-slate-800/80 bg-black/60 section-placeholder" data-inject="footer" aria-hidden="true"><div class="max-w-6xl mx-auto px-4 py-5 flex flex-col sm:flex-row gap-3 items-center justify-between text-[11px] text-slate-500" style="min-height:2.5rem"></div></footer>
+
+    </main>
+  <!-- DEFERRED: section templates — injected when placeholder approaches viewport (IntersectionObserver) -->
+  <template id="tpl-services"><section id="services" class="section bg-black/30 border-y border-slate-800/70">
       <div class="max-w-6xl mx-auto space-y-10 fade-up">
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
@@ -368,10 +386,8 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- PLATFORM FEATURES -->
-    <section id="features" class="section">
+    </section></template>
+  <template id="tpl-features"><section id="features" class="section">
       <div class="max-w-6xl mx-auto space-y-10">
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 fade-up">
           <div>
@@ -450,10 +466,8 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- AI SECTION -->
-    <section id="ai" class="section bg-black/40 border-y border-slate-800/70">
+    </section></template>
+  <template id="tpl-ai"><section id="ai" class="section bg-black/40 border-y border-slate-800/70">
       <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.3fr,1fr] gap-10 items-center">
         <div class="space-y-5 fade-up">
           <p class="text-xs uppercase tracking-[0.2em] text-[var(--soso-green)]">
@@ -528,10 +542,8 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section">
+    </section></template>
+  <template id="tpl-contact"><section id="contact" class="section">
       <div class="max-w-5xl mx-auto grid lg:grid-cols-[1.2fr,1fr] gap-10 items-start fade-up">
         <div>
           <p class="text-xs uppercase tracking-[0.2em] text-[var(--soso-green)] mb-2">
@@ -581,10 +593,8 @@
           </p>
         </form>
       </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800/80 bg-black/60">
+    </section></template>
+  <template id="tpl-footer"><footer class="border-t border-slate-800/80 bg-black/60">
       <div class="max-w-6xl mx-auto px-4 py-5 flex flex-col sm:flex-row gap-3 items-center justify-between text-[11px] text-slate-500">
         <p>© <span id="year"></span> SOSO MEDIA CO. Tüm hakları saklıdır.</p>
         <p class="flex items-center gap-2">
@@ -592,22 +602,42 @@
           <span class="text-[var(--soso-green)] font-semibold">Haluk Şakir Ekinci</span>
         </p>
       </div>
-    </footer>
-  </main>
+    </footer></template>
 
-  <script>
-    // PERF: single read + single write — no layout thrashing; year is below fold so no FCP impact
-    const yearEl = document.getElementById("year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // PERF: Scroll reveal — IntersectionObserver (no scroll listener = no passive needed).
-    // Unobserve after show to reduce callback work on future scrolls.
-    // rAF batches classList.add to next frame so we don't do DOM writes in same tick as observer callback (avoids layout thrashing).
-    const observer = new IntersectionObserver((entries) => {
+    <script>
+    // DEFERRED DOM: Services, Features, AI, Contact, Footer are not in initial DOM — injected when placeholder approaches viewport (IntersectionObserver rootMargin 200px). Hero stays; placeholders reserve same min-height to avoid CLS.
+    // PERF: Year set when footer is injected (footer is deferred); hero has no #year on initial load
+    function setYear() {
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+    }
+
+    // DEFERRED: IntersectionObserver injects section when placeholder approaches viewport (rootMargin = load before visible to avoid CLS)
+    const injectObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const placeholder = entry.target;
+        const name = placeholder.getAttribute('data-inject');
+        if (!name) return;
+        injectObserver.unobserve(placeholder);
+        const tpl = document.getElementById('tpl-' + name);
+        if (!tpl || !tpl.content) return;
+        const clone = tpl.content.cloneNode(true);
+        const root = clone.firstElementChild;
+        placeholder.replaceWith(clone);
+        // Initialize scroll-reveal for .fade-up inside injected content only (root is now in DOM; footer has no id)
+        if (root) root.querySelectorAll('.fade-up').forEach(el => revealObserver.observe(el));
+        if (name === 'footer') setYear();
+      });
+    }, { rootMargin: '200px 0px', threshold: 0 });
+
+    // PERF: Scroll reveal — same as before; runs on hero .fade-up and on injected .fade-up after inject
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
-        observer.unobserve(el);
+        revealObserver.unobserve(el);
         requestAnimationFrame(() => {
           el.classList.add('show');
           const onDone = () => {
@@ -619,12 +649,15 @@
       });
     }, { threshold: 0.2 });
 
-    // PERF: Defer observer setup to idle so initial paint isn't blocked; cache query result (single DOM read)
+    // Observe placeholders for injection
+    document.querySelectorAll('[data-inject]').forEach(el => injectObserver.observe(el));
+
+    // PERF: Defer reveal observer setup to idle; only hero .fade-up exists on load
     const fadeUps = document.querySelectorAll('.fade-up');
     if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(() => { fadeUps.forEach(el => observer.observe(el)); }, { timeout: 100 });
+      requestIdleCallback(() => { fadeUps.forEach(el => revealObserver.observe(el)); }, { timeout: 100 });
     } else {
-      fadeUps.forEach(el => observer.observe(el));
+      fadeUps.forEach(el => revealObserver.observe(el));
     }
   </script>
 </body>
