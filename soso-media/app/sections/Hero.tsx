@@ -18,50 +18,35 @@ const features = [
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-lime-500/10 rounded-full blur-[80px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px]" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+        <div className="absolute top-1/4 left-1/4 w-40 h-40 bg-lime-500/15 rounded-full blur-[40px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-purple-500/15 rounded-full blur-[40px]" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -24 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-8"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full"
-            >
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
               <span className="w-2 h-2 bg-lime-400 rounded-full animate-pulse" />
               <span className="text-sm text-gray-300">
                 AI destekli sosyal medya yönetim platformu
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1]"
-            >
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1]">
               Sosyal Medyada{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-lime-300">
                 Büyümenin
               </span>{' '}
               Yeni Yolu
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-lg text-gray-400 leading-relaxed max-w-xl"
-            >
+            <p className="text-lg text-gray-400 leading-relaxed max-w-xl">
               SOSO MEDIA CO, markanızın tüm içerik, reklam ve raporlama
               süreçlerini tek bir panelde toplar. Meta API entegrasyonları ve
               yapay zeka destekli analizlerle,{' '}
@@ -69,14 +54,9 @@ export function Hero() {
                 tahmin değil, veriye dayalı kararlar
               </span>{' '}
               alırsınız.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex flex-wrap gap-4"
-            >
+            <div className="flex flex-wrap gap-4">
               <a
                 href="#contact"
                 className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-lime-400 to-lime-500 text-black font-semibold rounded-full hover:shadow-[0_0_30px_rgba(163,230,53,0.4)] hover:scale-[1.02] transition-all duration-300"
@@ -90,35 +70,28 @@ export function Hero() {
               >
                 Platformu Keşfet
               </a>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-6 pt-4"
-            >
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 text-gray-400"
-                >
-                  <feature.icon className="w-5 h-5 text-lime-400" />
-                  <span className="text-sm">{feature.text}</span>
-                </div>
+            <div className="flex flex-wrap gap-6 pt-4">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 text-gray-400"
+                  >
+                    <Icon className="w-5 h-5 text-lime-400" />
+                    <span className="text-sm">{feature.text}</span>
+                  </div>
                 );
               })}
-            </motion.div>
+            </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.3,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="relative"
           >
             <DashboardMockup />

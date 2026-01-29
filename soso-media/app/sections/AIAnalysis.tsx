@@ -15,8 +15,8 @@ export function AIAnalysis() {
       id="ai-analysis"
       className="py-24 relative overflow-hidden"
     >
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-[80px]" />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-purple-500/15 rounded-full blur-[40px]" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,7 +65,6 @@ export function AIAnalysis() {
 
           <ScrollReveal direction="right">
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-2xl" />
               <div className="relative bg-[#12121a] border border-white/10 rounded-3xl p-8">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-white font-semibold">AI Analiz Özeti</h3>
@@ -75,18 +74,15 @@ export function AIAnalysis() {
                 </div>
                 <div className="space-y-4">
                   {reportData.insights.slice(0, 3).map((insight, index) => (
-                    <motion.div
+                    <div
                       key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.2 }}
                       className="flex gap-4 p-4 bg-white/5 rounded-xl"
                     >
                       <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Sparkles className="w-4 h-4 text-purple-400" />
                       </div>
                       <p className="text-sm text-gray-300">{insight}</p>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
                 <div className="mt-6 flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl border border-purple-500/20">

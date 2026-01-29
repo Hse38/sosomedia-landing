@@ -40,9 +40,9 @@ const testimonials: TestimonialItem[] = [
 export function Testimonials() {
   return (
     <section className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-lime-500/5 rounded-full blur-[60px]" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-500/5 rounded-full blur-[60px]" />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute top-0 left-1/4 w-32 h-32 bg-lime-500/10 rounded-full blur-[30px]" />
+        <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-purple-500/10 rounded-full blur-[30px]" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

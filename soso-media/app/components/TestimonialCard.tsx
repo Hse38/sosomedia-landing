@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
 import type { TestimonialItem } from '@/app/types';
 
@@ -11,10 +10,8 @@ interface TestimonialCardProps {
 
 export function TestimonialCard({ testimonial }: TestimonialCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.3 }}
-      className="relative bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 hover:border-white/[0.15] transition-all h-full"
+    <div
+      className="relative bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 hover:border-white/[0.15] transition-all h-full hover:-translate-y-0.5"
     >
       <div className="absolute -top-4 -left-2 w-10 h-10 bg-lime-400 rounded-xl flex items-center justify-center">
         <Quote className="w-5 h-5 text-black" />
@@ -57,6 +54,6 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
           </p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

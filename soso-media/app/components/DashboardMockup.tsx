@@ -1,19 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { TrendingUp, Users, FileText, Megaphone } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 export function DashboardMockup() {
   return (
     <div className="relative">
-      <div className="absolute -inset-4 bg-gradient-to-r from-lime-500/20 to-purple-500/20 rounded-3xl blur-2xl" />
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="relative bg-[#12121a] border border-white/10 rounded-3xl p-6 shadow-2xl"
-      >
+      <div className="relative bg-[#12121a] border border-white/10 rounded-3xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-lime-400 to-lime-500 rounded-xl flex items-center justify-center">
@@ -85,12 +77,7 @@ export function DashboardMockup() {
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-          className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#1a1a2e] to-[#252542] border border-white/10 rounded-xl p-4 shadow-xl"
-        >
+        <div className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#1a1a2e] to-[#252542] border border-white/10 rounded-xl p-4 shadow-xl">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
               <TrendingUp className="w-4 h-4 text-purple-400" />
@@ -107,8 +94,8 @@ export function DashboardMockup() {
               Dakikalar içinde
             </span>
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <div className="absolute -top-6 -left-6 w-24 h-24 border border-white/10 rounded-full" />
       <div className="absolute -bottom-8 -right-8 w-32 h-32 border border-lime-400/20 rounded-full" />

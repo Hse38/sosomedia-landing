@@ -91,12 +91,10 @@ html {
 }
 .animate-float {
   animation: float 3s ease-in-out infinite;
-  will-change: transform;
   transform: translateZ(0);
 }
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
-  will-change: opacity;
 }
 
 /* Reduced motion: accessibility & performance */
